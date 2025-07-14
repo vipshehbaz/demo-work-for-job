@@ -12,7 +12,7 @@ body {
 }
 
 .wrapper {
-  @apply max-w-[1366px] w-[90%] mx-auto;
+  @apply max-w-[1140px] w-[90%] mx-auto;
 }
 
 .section-heading {

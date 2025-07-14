@@ -14,6 +14,8 @@ import { useState, useRef } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import LeftArrow from "@/../public/assets/svgs/left-arrow.svg";
+import RightArrow from "@/../public/assets/svgs/right-arrow.svg";
 
 export default function Home() {
   const Testimonials = [
@@ -138,12 +140,10 @@ export default function Home() {
     centerPadding: "0px",
     slidesToShow: 3,
     infinite: true,
-    arrows: true,
+    arrows: false,
     speed: 500,
     autoplay: true,
     autoplaySpeed: 2500,
-    nextArrow: <SampleNextArrow />,
-    prevArrow: <SamplePrevArrow />,
     responsive: [
       {
         breakpoint: 900,
@@ -154,28 +154,6 @@ export default function Home() {
     ],
     beforeChange: (current: number, next: number) => setCurrent(next),
   };
-
-  // Custom arrow components (optional, can use default)
-  function SampleNextArrow(props: any) {
-    const { className, style, onClick } = props;
-    return (
-      <div
-        className={className}
-        style={{ ...style, display: "block", right: -30, zIndex: 2 }}
-        onClick={onClick}
-      />
-    );
-  }
-  function SamplePrevArrow(props: any) {
-    const { className, style, onClick } = props;
-    return (
-      <div
-        className={className}
-        style={{ ...style, display: "block", left: -30, zIndex: 2 }}
-        onClick={onClick}
-      />
-    );
-  }
 
   // Helper to get index with wrap-around
   const getIndex = (idx: number) =>
@@ -241,8 +219,8 @@ export default function Home() {
                   className="rounded-full"
                   src={item.img}
                   alt={`${item.name} pic`}
-                  height={100}
-                  width={100}
+                  height={77}
+                  width={77}
                 />
                 <div>
                   <p className="font-semibold text-xl leading-[175%] tracking-[0%]">
@@ -256,6 +234,30 @@ export default function Home() {
             </div>
           ))}
         </Slider>
+        <div className="w-full flex items-center justify-center mt-8 gap-[10px]">
+          <Image
+            src={LeftArrow}
+            alt="left arrow svg"
+            height={40}
+            width={40}
+            style={{ cursor: 'pointer' }}
+            onClick={() => sliderRef.current?.slickPrev()}
+          />
+          <div className="h-[1px] bg-[#CBCBCB] flex justify-start items-center" style={{ width: 229 }}>
+            <div
+              className="h-0.5 bg-[#00193BCC] opacity-80 transition-all ease-in-out duration-300"
+              style={{ width: `${((current + 1) / Testimonials.length) * 229}px` }}
+            ></div>
+          </div>
+          <Image
+            src={RightArrow}
+            alt="right arrow svg"
+            height={40}
+            width={40}
+            style={{ cursor: 'pointer' }}
+            onClick={() => sliderRef.current?.slickNext()}
+          />
+        </div>
       </div>
     </div>
   );
