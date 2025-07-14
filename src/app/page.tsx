@@ -10,7 +10,7 @@ import LoenPic from "@/../public/assets/person-images/loen.jpg";
 import SalmanPic from "@/../public/assets/person-images/salman-pic.jpg";
 import SaraPic from "@/../public/assets/person-images/sara-pic.jpg";
 import SarthakPic from "@/../public/assets/person-images/sarthak.jpg";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -129,6 +129,9 @@ export default function Home() {
     },
   ];
 
+  const [current, setCurrent] = useState(0);
+  const sliderRef = useRef<Slider>(null);
+
   // Slider settings for react-slick
   const settings = {
     centerMode: true,
@@ -137,7 +140,9 @@ export default function Home() {
     infinite: true,
     arrows: true,
     speed: 500,
-    nextArrow: <SampleNextArrow />, // Custom arrow components if needed
+    autoplay: true,
+    autoplaySpeed: 2500,
+    nextArrow: <SampleNextArrow />,
     prevArrow: <SamplePrevArrow />,
     responsive: [
       {
@@ -147,11 +152,8 @@ export default function Home() {
         },
       },
     ],
-    // Custom class for active/center slide
     beforeChange: (current: number, next: number) => setCurrent(next),
   };
-
-  const [current, setCurrent] = useState(0);
 
   // Custom arrow components (optional, can use default)
   function SampleNextArrow(props: any) {
@@ -175,26 +177,56 @@ export default function Home() {
     );
   }
 
+  // Helper to get index with wrap-around
+  const getIndex = (idx: number) =>
+    (idx + Testimonials.length) % Testimonials.length;
+  const prevIdx = getIndex(current - 1);
+  const nextIdx = getIndex(current + 1);
+
+  const n = Testimonials.length;
+  const tripled = [...Testimonials, ...Testimonials, ...Testimonials];
+  const centerIdx = n + current;
+
   return (
     <div className="wrapper">
       <h2 className="section-heading mt-10 opacity-90">Testimonials</h2>
-      <div className="pic-container">
-        {[...Testimonials, ...Testimonials].map((item, index) => (
-          <div key={index} className="per-pic-container">
-            <div className="custom-border"></div>
-            <div className="custom-border-last"></div>
-            <Image
-              className="rounded-full relative z-10"
-              src={item.img}
-              alt={`${item.name} pic`}
-              height={100}
-              width={100}
-            />
-          </div>
-        ))}
+      {/* Avatars as a sliding row, center current avatar */}
+      <div className="pic-slider-outer">
+        <div
+          className="pic-slider-inner pic-container"
+          style={{
+            transform: `translateX(calc(50% - ${(centerIdx + 0.5) * 79}px))`,
+            transition: "transform 0.5s cubic-bezier(0.4,0,0.2,1)",
+            display: "flex",
+            gap: "20px",
+          }}
+        >
+          {tripled.map((item, idx) => (
+            <div
+              key={idx}
+              className={`per-pic-container `}
+              onClick={() => sliderRef.current?.slickGoTo(idx % n)}
+              style={{ cursor: "pointer" }}
+            >
+              <div className="custom-border"></div>
+              <div className="custom-border-last"></div>
+              <Image
+                className="rounded-full relative z-10"
+                src={item.img}
+                alt={`${item.name} pic`}
+                height={60}
+                width={60}
+              />
+            </div>
+          ))}
+        </div>
       </div>
       <div className="mt-8 w-full">
-        <Slider {...settings} className="testimonial-slick-slider">
+        <Slider
+          ref={sliderRef}
+          {...settings}
+          className="testimonial-slick-slider"
+        >
           {Testimonials.map((item, index) => (
             <div
               key={index}
