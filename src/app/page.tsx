@@ -173,7 +173,7 @@ export default function Home() {
         <div
           className="pic-slider-inner pic-container"
           style={{
-            transform: `translateX(calc(50% - ${(centerIdx + 0.5) * 79}px))`,
+            transform: `translateX(calc(50% - ${(centerIdx + 0.5) * 80}px))`,
             transition: "transform 0.5s cubic-bezier(0.4,0,0.2,1)",
             display: "flex",
             gap: "20px",
@@ -205,34 +205,52 @@ export default function Home() {
           {...settings}
           className="testimonial-slick-slider"
         >
-          {Testimonials.map((item, index) => (
-            <div
-              key={index}
-              className={`testimonials-container slick-slide-custom ${
-                index === current ? "slick-center-custom" : "slick-side-custom"
-              }`}
-            >
-              <h3 className="section-heading">{item.tag}</h3>
-              <p className="mt-5 font-normal text-xl">{item.des}</p>
-              <div className="flex mt-[30px] items-center gap-3">
-                <Image
-                  className="rounded-full"
-                  src={item.img}
-                  alt={`${item.name} pic`}
-                  height={77}
-                  width={77}
-                />
-                <div>
-                  <p className="font-semibold text-xl leading-[175%] tracking-[0%]">
-                    {item.name}
-                  </p>
-                  <p className="font-normal text-base leading-[175%]">
-                    Designation
-                  </p>
+          {Testimonials.map((item, index) => {
+            // Determine if this is the left, center, or right visible card
+            let cardType = "";
+            if (index === current) cardType = "center";
+            else if (index === prevIdx) cardType = "left";
+            else if (index === nextIdx) cardType = "right";
+
+            // Only side cards are clickable
+            const isClickable = cardType === "left" || cardType === "right";
+            return (
+              <div
+                key={index}
+                className={`testimonials-container slick-slide-custom ${
+                  index === current
+                    ? "slick-center-custom"
+                    : "slick-side-custom"
+                }`}
+                onClick={
+                  isClickable
+                    ? () => sliderRef.current?.slickGoTo(index)
+                    : undefined
+                }
+                style={{ cursor: isClickable ? "pointer" : "default" }}
+              >
+                <h3 className="section-heading">{item.tag}</h3>
+                <p className="mt-5 font-normal text-xl">{item.des}</p>
+                <div className="flex mt-[30px] items-center gap-3">
+                  <Image
+                    className="rounded-full"
+                    src={item.img}
+                    alt={`${item.name} pic`}
+                    height={77}
+                    width={77}
+                  />
+                  <div>
+                    <p className="font-semibold text-xl leading-[175%] tracking-[0%]">
+                      {item.name}
+                    </p>
+                    <p className="font-normal text-base leading-[175%]">
+                      Designation
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </Slider>
         <div className="w-full flex items-center justify-center mt-8 gap-[10px]">
           <Image
@@ -240,13 +258,18 @@ export default function Home() {
             alt="left arrow svg"
             height={40}
             width={40}
-            style={{ cursor: 'pointer' }}
+            style={{ cursor: "pointer" }}
             onClick={() => sliderRef.current?.slickPrev()}
           />
-          <div className="h-[1px] bg-[#CBCBCB] flex justify-start items-center" style={{ width: 229 }}>
+          <div
+            className="h-[1px] gray flex justify-start items-center"
+            style={{ width: 229 }}
+          >
             <div
-              className="h-0.5 bg-[#00193BCC] opacity-80 transition-all ease-in-out duration-300"
-              style={{ width: `${((current + 1) / Testimonials.length) * 229}px` }}
+              className="h-0.5 foreground opacity-80 transition-all ease-in-out duration-300"
+              style={{
+                width: `${((current + 1) / Testimonials.length) * 229}px`,
+              }}
             ></div>
           </div>
           <Image
@@ -254,7 +277,7 @@ export default function Home() {
             alt="right arrow svg"
             height={40}
             width={40}
-            style={{ cursor: 'pointer' }}
+            style={{ cursor: "pointer" }}
             onClick={() => sliderRef.current?.slickNext()}
           />
         </div>

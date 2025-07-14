@@ -3,6 +3,15 @@
 :root {
   --background: #d9d9d9;
   --foreground: rgba(0, 25, 59, 1);
+  --gray: #cbcbcb;
+}
+
+.gray {
+  background-color: var(--gray);
+}
+
+.foreground {
+  background-color: var(--foreground);
 }
 
 body {
@@ -94,7 +103,7 @@ body {
 }
 
 .testimonials-container {
-  @apply py-[56px] px-[66px] bg-white rounded-4xl;
+  @apply py-[56px] px-[66px] bg-white rounded-4xl cursor-pointer;
   position: relative;
 }
 
