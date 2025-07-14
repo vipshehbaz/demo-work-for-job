@@ -106,3 +106,17 @@ body {
   mask-composite: exclude;
   pointer-events: none;
 }
+
+.slick-slide-custom {
+  transition: transform 0.3s, opacity 0.3s;
+}
+.slick-center-custom {
+  transform: scale(1);
+  opacity: 1;
+  z-index: 2;
+}
+.slick-side-custom {
+  transform: scale(0.85);
+  opacity: 0.5;
+  z-index: 1;
+}
