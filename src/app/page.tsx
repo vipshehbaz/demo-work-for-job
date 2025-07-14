@@ -134,7 +134,6 @@ export default function Home() {
   const [current, setCurrent] = useState(0);
   const sliderRef = useRef<Slider>(null);
 
-  // Slider settings for react-slick
   const settings = {
     centerMode: true,
     centerPadding: "0px",
@@ -155,7 +154,6 @@ export default function Home() {
     beforeChange: (current: number, next: number) => setCurrent(next),
   };
 
-  // Helper to get index with wrap-around
   const getIndex = (idx: number) =>
     (idx + Testimonials.length) % Testimonials.length;
   const prevIdx = getIndex(current - 1);
@@ -168,7 +166,6 @@ export default function Home() {
   return (
     <div className="wrapper">
       <h2 className="section-heading mt-10 opacity-90">Testimonials</h2>
-      {/* Avatars as a sliding row, center current avatar */}
       <div className="pic-slider-outer">
         <div
           className="pic-slider-inner pic-container"
@@ -206,13 +203,11 @@ export default function Home() {
           className="testimonial-slick-slider"
         >
           {Testimonials.map((item, index) => {
-            // Determine if this is the left, center, or right visible card
             let cardType = "";
             if (index === current) cardType = "center";
             else if (index === prevIdx) cardType = "left";
             else if (index === nextIdx) cardType = "right";
 
-            // Only side cards are clickable
             const isClickable = cardType === "left" || cardType === "right";
             return (
               <div
