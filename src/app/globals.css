@@ -1,26 +1,108 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --background: #d9d9d9;
+  --foreground: rgba(0, 25, 59, 1);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-open-sans), Helvetica, sans-serif;
+}
+
+.wrapper {
+  @apply max-w-[1366px] w-[90%] mx-auto;
+}
+
+.section-heading {
+  @apply font-bold text-[40px] leading-[122%] tracking-[-0.6%] text-center;
+  font-family: var(--font-montserrat), Helvetica, sans-serif;
+}
+
+.pic-container {
+  @apply w-full h-[60px] flex items-center gap-5 mt-8 overflow-hidden relative;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 20%,
+    black 80%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent -20%,
+    black 50%,
+    black 0%,
+    transparent 120%
+  );
+}
+
+.per-pic-container {
+  @apply w-[60px] h-[60px] rounded-full p-0.5 flex-shrink-0 relative;
+  position: relative;
+  border: 1px solid;
+}
+
+.per-pic-container:before {
+  content: "";
+  position: absolute;
+  top: -5px;
+  left: 23px;
+  width: 14px;
+  height: 65px;
+  background: var(--background);
+}
+
+.per-pic-container:after {
+  content: "";
+  position: absolute;
+  top: 23px;
+  left: -4px;
+  width: 65px;
+  height: 14px;
+  background: var(--background);
+}
+
+.custom-border{
+  position: absolute;
+  left: 23px;
+  top: -2px;
+  rotate: 46deg;
+  width: 14px;
+  height: 65px;
+  background: var(--background);
+}
+
+.custom-border-last{
+  position: absolute;
+  left: 23px;
+  top: -2px;
+  rotate: -46deg;
+  width: 14px;
+  height: 65px;
+  background: var(--background);
+}
+
+.testimonials-container {
+  @apply py-[56px] px-[66px] bg-white rounded-4xl;
+  position: relative;
+}
+
+.testimonials-container::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: 2rem;
+  padding: 0.63px;
+  background: linear-gradient(
+    271.83deg,
+    rgba(0, 25, 59, 0.45) 19.69%,
+    rgba(0, 68, 161, 0.45) 100%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
 }
